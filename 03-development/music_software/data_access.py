@@ -1,5 +1,5 @@
 # Data Access Layer for Music Software
-# Ver 1.3.0
+# Ver 1.3.1
 # MOSTLY FUNCTIONAL
 # By Digby Curtis
 # Needs a few minor tweaks and removing the test code but beyond that this is finished (I think)

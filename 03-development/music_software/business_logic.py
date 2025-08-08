@@ -1,5 +1,5 @@
 # Business Logic
-# Ver 1.0.1
+# Ver 1.1.0
 
 import math
 import data_access as da
@@ -163,16 +163,16 @@ def access_store(project):
         start_vol = l_search(current_line, "VOLUME")
         end_vol = len(current_line)
 
-        frequencies = ""
+        frequencies = []
 
-        for i in range(start_freq + 1, start_vol - 1):
-            frequencies += (current_line[i] + ",")
+        for i in range(start_freq + 1, start_vol):
+            frequencies.append(current_line[i] + ",")
         
-        volumes = ""
+        volumes = []
 
         for i in range(start_vol + 1, end_vol):
             if i != (end_vol - 1):
-                volumes += (current_line[i] + ",")
+                volumes.append(current_line[i] + ",")
 
         wave = da.Wave(name, frequencies, volumes)
         wave_array.append(wave)
@@ -220,18 +220,37 @@ def run_step(d_fps):
     vol_plot.close()
 
     for i in range(len(freq_coords)):
-        play_sound(freq_coords[i].split(",")[1], d_fps)
+        freq_at_t = freq_coords[i].split(",")[1]
+        vol_at_t = vol_coords[i].split(",")[1]
+
+        freq_at_t = freq_at_t.strip()
+        vol_at_t = vol_at_t.strip()
+
+        freq_at_t = round(float(freq_at_t))
+        vol_at_t = round(float(vol_at_t))
+
+        play_sound(freq_at_t, vol_at_t)
 
     time.sleep(1/d_fps)
 
-def play_sound(freq, vol, fps):
-    winsound.beep(freq, (1/fps))
+def play_sound(freq, vol):
+    if freq > 37 and freq < 32767:
+        winsound.Beep(freq, 1000)
 
 open_project()
 
 wipe_file("freq_plot")
 wipe_file("vol_plot")
 
-for i in range(1000):
-    run_step(1000)
+time_array = []
+error_string = ""
 
+# Input may not go below 1000
+for i in range(100):
+    time_array.append(time.time() - start_time)
+    run_step(10000)
+    time_array.append(time.time() - start_time)
+    error_string += str(time.time() - start_time) + "," + str(time_array[i] - time_array[i - 1]) + "\n"
+
+print(time_array)
+print(error_string)
