@@ -1,10 +1,13 @@
-# Filename: presentation.py
-# Version: 
-# Programmer:
-# Client: 
-# Date: 
-"""
-    Description: [Briefly describe the purpose and responsibilities of this module.]
-"""
+# Presentation Layer
+# Ver 0.1.0
+from PyQt5.QtWidgets import *
 
-import business_logic as bl
+def screen():
+    app = QApplication([])
+    window = QWidget()
+
+    window.show()
+    app.exec_()
+
+if __name__ == "__main__":
+    screen()
