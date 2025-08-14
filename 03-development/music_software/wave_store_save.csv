@@ -1,2 +1,2 @@
-f1,FREQUENCY,2*sin(2*x) : x<pi,4*(x-pi) : pi<x<4,VOLUME,1*x : x<2,(1/2)*x + 1 : 2<x,
-f2,FREQUENCY,(1/2) * cos(pi*4*x) : x<2,(1/2) + 0*x : 2<x,VOLUME,(-1/2)*x + 2 : x<2,1 + 0*x : 2<x,
+f1,FREQUENCY,100*sin(2*x) + 440: x<10 * pi,40*(x-pi) + 440 : 2 * pi<x<40,VOLUME,1*x : x<20,(1/2)*x + 1 : 20<x,
+f2,FREQUENCY,(1/2) * cos(pi*4*x) + 440 : x<40,440 + 2*x : 5<x,VOLUME,(-1/2)*x + 2 : x<20,1 + 0*x : 20<x,

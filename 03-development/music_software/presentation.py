@@ -1,6 +1,8 @@
 # Presentation Layer
 # Ver 0.1.0
-from PyQt5.QtWidgets import *
+
+import sys
+from PyQt5 import QtWidgets, uic
 
 def screen():
     app = QApplication([])

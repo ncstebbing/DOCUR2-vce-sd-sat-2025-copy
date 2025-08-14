@@ -1,9 +1,10 @@
 # Business Logic
-# Ver 1.1.0
+# Ver 2.1.0
 
 import math
 import data_access as da
 import time
+import threading
 import winsound
 
 def l_search(array, item):
@@ -130,6 +131,8 @@ def ex_request(func_num):
         func_array.append(p_func + " : " + p_domain)
     return(func_array)
 
+wave_array = []
+
 def make_wave(num_freq, num_vol):
     global wave_array
     print("")
@@ -178,14 +181,15 @@ def access_store(project):
         wave_array.append(wave)
 
 def open_project():
-    which_project = input("Which project would you like to open? ")
+    #which_project = input("Which project would you like to open? ")
+    which_project = "wave_store"
 
     try:
         wp = open(which_project + ".csv", "rt")
         wp.close()
         access_store(which_project)
     except:
-        print("There was a problem with that project, please make new waves.")
+        print("That project was not found, please make new waves.")
         wave_array = []
         for i in range(2):
             make_wave(2, 2)
@@ -193,10 +197,7 @@ def open_project():
         for i in range(len(wave_array)):
             wave_array[i].save(which_project)
 
-# Setting up time
-start_time = time.time()
-
-def run_step(d_fps):
+def run_step():
     freq_coords = []
     vol_coords = []
     freq_plot_string = ""
@@ -226,16 +227,20 @@ def run_step(d_fps):
         freq_at_t = freq_at_t.strip()
         vol_at_t = vol_at_t.strip()
 
-        freq_at_t = round(float(freq_at_t))
+        freq_at_t = freq_at_t.split("\n")
+
         vol_at_t = round(float(vol_at_t))
-
-        play_sound(freq_at_t, vol_at_t)
-
-    time.sleep(1/d_fps)
+        
+        for i in range(len(freq_at_t)):
+            freq_at_t[i] = round(float(freq_at_t[i]))
+            play_sound(freq_at_t[i], vol_at_t)
 
 def play_sound(freq, vol):
-    if freq > 37 and freq < 32767:
-        winsound.Beep(freq, 1000)
+    def play_nosleep():
+        if freq > 37 and freq < 10000:
+            winsound.Beep(freq, 900)
+    audio_thread = threading.Thread(target = play_nosleep)
+    audio_thread.start()
 
 open_project()
 
@@ -245,12 +250,12 @@ wipe_file("vol_plot")
 time_array = []
 error_string = ""
 
+# Setting up time
+start_time = time.time()
+
 # Input may not go below 1000
-for i in range(100):
+for i in range(1000):
     time_array.append(time.time() - start_time)
-    run_step(10000)
+    run_step()
     time_array.append(time.time() - start_time)
     error_string += str(time.time() - start_time) + "," + str(time_array[i] - time_array[i - 1]) + "\n"
-
-print(time_array)
-print(error_string)

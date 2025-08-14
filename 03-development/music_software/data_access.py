@@ -1,17 +1,20 @@
 # Data Access Layer for Music Software
-# Ver 1.3.1
+# Ver 1.3.3
 # MOSTLY FUNCTIONAL
 # By Digby Curtis
 # Needs a few minor tweaks and removing the test code but beyond that this is finished (I think)
 
-# For math.pi and math.sin()
-import math
+# this code starts a tsunami somewhere by hacking into the US government war equipment - Jerry
+# its very likely that itll hit russia and start WWIII - Jerry
 
-wave_list = []
+# For math.pi and math.sin() (also math.cos(), math.tan(), and math.e())
+# math is a sin - Jerry
+import math
 
 # The wave class, which bundles volume and frequency across multiple functions (allowing for piecewise)
 class Wave():
     # The initialiser, with arrays for volume and frequency (due to having multiple for piecewise)
+    # may start a tsunami somewhere - Jerry
     def __init__(self, name, freq_array, vol_array):
         self.name = name
         self.frequency = freq_array
@@ -26,10 +29,12 @@ class Wave():
 
     # Determines where an x value lies within the array of frequencies and volumes
     # Inputs the inputted x value into that function
+    # evluates when christian will arrive to class - Jerry
     def evaluate(self, freq_or_vol, x):
 
         in_domain = False
-
+        return_val = []
+        # frequency is how frequent christian shows up to class - Jerry
         if freq_or_vol == "frequency":
 
             # Has to repeat for every item to check all of the domains.
@@ -38,6 +43,58 @@ class Wave():
                 # Accesses the domain and equation parts of each function in the frequency array
                 domain = self.frequency[i].split(":")[1].split("<")
                 equation = self.frequency[i].split(":")[0]
+
+                for i in range(len(domain)):
+                    domain[i] = domain[i].strip()
+
+                # In case there is no upper boundary for a function
+                if len(domain) < 3 and domain[0] != "x":
+                    domain.append("math.inf")
+
+                # If pi is found within the domain, it is replaced with math.pi (doesn't make the user write math.pi)
+                for p in range(len(domain)):
+                    if domain[p].find("pi") != -1:
+                        domain[p] = domain[p].replace("pi", "math.pi")
+
+                # If the x value is within the domain of one of the functions, it will edit the equation to be possible to evaluate, then return it evaluated.
+                if domain[0] != "x":
+                    if eval(domain[0]) < x and x < eval(domain[2]):
+                        in_domain = True
+                        if equation.find("x") != -1:
+                            equation = equation.replace("x", str(x))
+                        if equation.find("pi") != - 1:
+                            equation = equation.replace("pi", "math.pi")
+                        if equation.find("sin") != -1:
+                            equation = equation.replace("sin", "math.sin")
+                        if equation.find("cos") != -1:
+                            equation = equation.replace("cos", "math.cos")
+                        if equation.find("tan") != -1:
+                            equation = equation.replace("tan", "math.tan")
+                        if eval(equation) > 0:
+                            return_val.append(eval(equation))
+                        else:
+                            return_val.append(0)
+                elif x < eval(domain[1]):
+                    in_domain = True
+                    if equation.find("x") != -1:
+                        equation = equation.replace("x", str(x))
+                    if equation.find("pi") != - 1:
+                        equation = equation.replace("pi", "math.pi")
+                    if equation.find("sin") != -1:
+                        equation = equation.replace("sin", "math.sin")
+                    if equation.find("cos") != -1:
+                        equation = equation.replace("cos", "math.cos")
+                    if equation.find("tan") != -1:
+                        equation = equation.replace("tan", "math.tan")
+                    if eval(equation) > 0:
+                        return_val.append(eval(equation))
+                    else:
+                        return_val.append(0)
+                    
+        if freq_or_vol == "volume":
+            for i in range(len(self.volume)):
+                domain = self.volume[i].split(":")[1].split("<")
+                equation = self.volume[i].split(":")[0]
 
                 # In case there is no upper boundary for a function
                 if len(domain) < 3 and domain[0] != " x ":
@@ -48,7 +105,6 @@ class Wave():
                     if domain[p].find("pi") != -1:
                         domain[p] = domain[p].replace("pi", "math.pi")
 
-                # If the x value is within the domain of one of the functions, it will edit the equation to be possible to evaluate, then return it evaluated.
                 if domain[0] != " x ":
                     if eval(domain[0]) < x and x < eval(domain[2]):
                         in_domain = True
@@ -63,9 +119,9 @@ class Wave():
                         if equation.find("tan") != -1:
                             equation = equation.replace("tan", "math.tan")
                         if eval(equation) > 0:
-                            return(eval(equation))
+                            return_val.append(eval(equation))
                         else:
-                            return(0)
+                            return_val.append(0)
                 elif x < eval(domain[1]):
                     in_domain = True
                     if equation.find("x") != -1:
@@ -79,73 +135,34 @@ class Wave():
                     if equation.find("tan") != -1:
                         equation = equation.replace("tan", "math.tan")
                     if eval(equation) > 0:
-                        return(eval(equation))
+                        return_val.append(eval(equation))
                     else:
-                        return(0)
-                    
-        if freq_or_vol == "volume":
-            for i in range(len(self.volume)):
-                domain = self.volume[i].split(":")[1].split("<")
-                equation = self.volume[i].split(":")[0]
-
-                                # In case there is no upper boundary for a function
-                if len(domain) < 3 and domain[0] != " x ":
-                    domain.append("math.inf")
-
-                # If pi is found within the domain, it is replaced with math.pi (doesn't make the user write math.pi)
-                for p in range(len(domain)):
-                    if domain[p].find("pi") != -1:
-                        domain[p] = domain[p].replace("pi", "math.pi")
-
-                if domain[0] != " x ":
-                    if eval(domain[0]) < x and x < eval(domain[2]):
-                        in_domain = True
-                        if equation.find("x") != -1:
-                            equation = equation.replace("x", str(x))
-                        if equation.find("pi") != - 1:
-                            equation = equation.replace("pi", "math.pi")
-                        if equation.find("sin") != -1:
-                            equation = equation.replace("sin", "math.sin")
-                        if equation.find("cos") != -1:
-                            equation = equation.replace("cos", "math.cos")
-                        if equation.find("tan") != -1:
-                            equation = equation.replace("tan", "math.tan")
-                        if eval(equation) > 0:
-                            return(eval(equation))
-                        else:
-                            return(0)
-                elif x < eval(domain[1]):
-                    in_domain = True
-                    if equation.find("x") != -1:
-                        equation = equation.replace("x", str(x))
-                    if equation.find("pi") != - 1:
-                        equation = equation.replace("pi", "math.pi")
-                    if equation.find("sin") != -1:
-                        equation = equation.replace("sin", "math.sin")
-                    if equation.find("cos") != -1:
-                        equation = equation.replace("cos", "math.cos")
-                    if equation.find("tan") != -1:
-                        equation = equation.replace("tan", "math.tan")
-                    if eval(equation) > 0:
-                        return(eval(equation))
-                    else:
-                        return(0)
+                        return_val.append(0)
                     
         if not in_domain:
             # If it isn't in the domain then there shouldn't be frequency or volume
-            return(0)
-            
-    def time_step(self, freq_or_vol, current_time):
+            return([0])
+        else:
+            return(return_val)
         
+    # ZA WARUDO - Jerry
+    # oh it says time step not time stop - Jerry        
+    def time_step(self, freq_or_vol, current_time):
+        # sends you to the future
         x = current_time
         if freq_or_vol == "frequency":
             y = self.evaluate("frequency", x)
         elif freq_or_vol == "volume":
             y = self.evaluate("volume", x)
-        coordinates = str(x) + ", " + str(y)
+        for i in range(len(y)):
+            y[i] = str(y[i])
+            y[i] = str(x) + ", " + y[i].strip("[]")
+        coordinates = "\n".join(y)
         return(coordinates)
 
     # Used to save the volume and frequency properties into a csv (to be accessed and written back into its properties when reopened)
+    # saves the frequency of tsunami disasters - Jerry
+    # surelyyyyyyy function names could be more descriptive - Jerry
     def save(self, csv):
         csv = open(csv + ".csv", "at")
         freq_string = ""
