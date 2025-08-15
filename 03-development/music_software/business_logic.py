@@ -1,5 +1,5 @@
 # Business Logic
-# Ver 2.1.0
+# Ver 2.1.1
 
 import math
 import data_access as da
@@ -242,20 +242,30 @@ def play_sound(freq, vol):
     audio_thread = threading.Thread(target = play_nosleep)
     audio_thread.start()
 
-open_project()
+#open_project()
 
 wipe_file("freq_plot")
 wipe_file("vol_plot")
 
-time_array = []
-error_string = ""
-
-# Setting up time
-start_time = time.time()
+playing_sound = False
 
 # Input may not go below 1000
-for i in range(1000):
-    time_array.append(time.time() - start_time)
-    run_step()
-    time_array.append(time.time() - start_time)
-    error_string += str(time.time() - start_time) + "," + str(time_array[i] - time_array[i - 1]) + "\n"
+def play():
+    if playing_sound == False:
+
+        playing_sound = True
+
+        time_array = []
+        error_string = ""
+
+        # Setting up time
+        start_time = time.time()
+
+        while playing_sound:
+            time_array.append(time.time() - start_time)
+            print("RUNNING")
+            run_step()
+            time_array.append(time.time() - start_time)
+            error_string += str(time.time() - start_time) + "," + str(time_array[-1] - time_array[-2]) + "\n"
+    else:
+        playing_sound = False
