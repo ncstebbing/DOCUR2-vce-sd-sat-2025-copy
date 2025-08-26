@@ -181,8 +181,8 @@ def access_store(project):
         wave_array.append(wave)
 
 def open_project():
-    #which_project = input("Which project would you like to open? ")
-    which_project = "wave_store"
+    which_project = input("Which project would you like to open? ")
+    #which_project = "wave_store"
 
     try:
         wp = open(which_project + ".csv", "rt")
