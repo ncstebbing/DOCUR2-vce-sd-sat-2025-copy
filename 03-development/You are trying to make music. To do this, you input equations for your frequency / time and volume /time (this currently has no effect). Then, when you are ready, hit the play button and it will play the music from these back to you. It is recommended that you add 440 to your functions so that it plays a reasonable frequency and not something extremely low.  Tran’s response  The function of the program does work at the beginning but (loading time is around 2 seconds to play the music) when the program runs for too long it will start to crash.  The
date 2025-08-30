@@ -1,5 +1,0 @@
-You are trying to make music. To do this, you input equations for your frequency / time and volume / time (this currently has no effect). Then, when you are ready, hit the play button and it will play the music from these back to you. It is recommended that you add 440 to your functions so that it plays a reasonable frequency and not something extremely low.
-
-Tran’s response 
-The function of the program does work at the beginning but (loading time is around 2 seconds to play the music) when the program runs for too long it will start to crash. 
-The 
